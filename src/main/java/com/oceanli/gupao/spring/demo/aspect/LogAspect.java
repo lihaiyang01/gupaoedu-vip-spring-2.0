@@ -1,6 +1,7 @@
 package com.oceanli.gupao.spring.demo.aspect;
 
 import com.oceanli.gupao.spring.framework.aop.GPJoinPoint;
+import com.oceanli.gupao.spring.framework.aop.GPProceedingJoinPoint;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
@@ -29,10 +30,13 @@ public class LogAspect {
                 "\nThrows:" + ex.getMessage());
     }
 
-    public void around(GPJoinPoint joinPoint){
-        log.info("环绕通知 " +
-                "\nTargetObject:" + joinPoint.getThis() +
-                "\nArgs:" + Arrays.toString(joinPoint.getArguments()));
+    public Object around(GPProceedingJoinPoint gpProceedingJoinPoint) throws Throwable{
+        log.info("环绕通知前置 " +
+                "\nTargetObject:" + gpProceedingJoinPoint.getThis() +
+                "\nArgs:" + Arrays.toString(gpProceedingJoinPoint.getArguments()));
+        Object proceed = gpProceedingJoinPoint.proceed();
+        log.info("环绕通知后置 " + "\nresult:" + proceed);
+        return proceed;
     }
 
 }

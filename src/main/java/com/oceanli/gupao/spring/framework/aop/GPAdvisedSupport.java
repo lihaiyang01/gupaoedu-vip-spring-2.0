@@ -2,6 +2,7 @@ package com.oceanli.gupao.spring.framework.aop;
 
 import com.oceanli.gupao.spring.framework.aop.aspect.GPMethodAfterAdviceInterceptor;
 import com.oceanli.gupao.spring.framework.aop.aspect.GPMethodAfterThrowingAdviceInterceptor;
+import com.oceanli.gupao.spring.framework.aop.aspect.GPMethodAroundAdviceInterceptor;
 import com.oceanli.gupao.spring.framework.aop.aspect.GPMethodBeforeAdviceInterceptor;
 import lombok.Data;
 
@@ -130,6 +131,9 @@ public class GPAdvisedSupport {
                                 new GPMethodAfterThrowingAdviceInterceptor(aspectMethodMap.get(config.getAspectAfterThrow()), aspectTarget.newInstance());
                         throwingAdviceInterceptor.setThrowingName(config.getAspectAfterThrowingName());
                         advices.add(throwingAdviceInterceptor);
+                    }
+                    if (config.getAspectAround() != null && !"".equals(config.getAspectAround())) {
+                        advices.add(new GPMethodAroundAdviceInterceptor(aspectMethodMap.get(config.getAspectAround()), aspectTarget.newInstance()));
                     }
                     methodCache.put(method, advices);
                 }

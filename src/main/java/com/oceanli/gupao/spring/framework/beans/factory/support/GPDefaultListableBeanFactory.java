@@ -100,6 +100,7 @@ public class GPDefaultListableBeanFactory implements GPBeanFactory {
         config.setAspectAfter(reader.getConfig().getProperty("aspectAfter"));
         config.setAspectAfterThrow(reader.getConfig().getProperty("aspectAfterThrow"));
         config.setAspectAfterThrowingName(reader.getConfig().getProperty("aspectAfterThrowingName"));
+        config.setAspectAround(reader.getConfig().getProperty("aspectAround"));
         return new GPAdvisedSupport(config);
     }
 
