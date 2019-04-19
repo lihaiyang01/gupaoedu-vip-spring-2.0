@@ -2,6 +2,7 @@ package com.oceanli.gupao.spring.demo.controller;
 
 import com.oceanli.gupao.spring.demo.service.IModifyService;
 import com.oceanli.gupao.spring.demo.service.IQueryService;
+import com.oceanli.gupao.spring.demo.service.impl.CglibService;
 import com.oceanli.gupao.spring.framework.annotation.GPAutowired;
 import com.oceanli.gupao.spring.framework.annotation.GPController;
 import com.oceanli.gupao.spring.framework.annotation.GPRequestMapping;
@@ -21,6 +22,9 @@ public class MyAction {
 
     @GPAutowired
     IModifyService modifyService;
+
+    @GPAutowired("cglibService")
+    CglibService cglibService;
 
     @GPRequestMapping("/query.json")
     public GPModelAndView query(HttpServletRequest request, HttpServletResponse response,
@@ -46,6 +50,13 @@ public class MyAction {
                                @GPRequestParam("id") Integer id,
                                @GPRequestParam("name") String name){
         String result = modifyService.edit(id,name);
+        return out(response,result);
+    }
+
+    @GPRequestMapping("/cglib.json")
+    public GPModelAndView cglibTest(HttpServletRequest request,HttpServletResponse response,
+                               @GPRequestParam("name") String name){
+        String result = cglibService.get(name);
         return out(response,result);
     }
 
