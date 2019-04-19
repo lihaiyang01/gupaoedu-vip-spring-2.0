@@ -13,6 +13,9 @@ public class GPBeanWrapper {
         return wrappedInstance;
     }
 
+    public void setWrappedInstance(Object wrappedInstance) {
+        this.wrappedInstance = wrappedInstance;
+    }
 
     public Class<?> getWrappedClass() {
         return this.wrappedInstance.getClass();

@@ -18,9 +18,11 @@ public abstract class GPAbstractRefreshableApplicationContext extends GPAbstract
     @Override
     protected void refreshBeanFactory() throws Exception{
 
+
         GPDefaultListableBeanFactory beanFactory = createBeanFactory();
         //1、定位，定位配置文件
         this.reader = new GPBeanDefinitionReader(configLocations);
+        beanFactory.reader = reader;
         //2、加载配置文件，扫描相关的类，把它们转换成GPBeanDefinition
         List<GPBeanDefinition> gpBeanDefinitions = reader.doLoadBeanDefinitions();
         //3、注册，把配置信息GPBeanDefinition放到容器里面(伪 IOC 容器)
@@ -74,7 +76,7 @@ public abstract class GPAbstractRefreshableApplicationContext extends GPAbstract
 
     protected GPDefaultListableBeanFactory createBeanFactory(){
 
-        return new GPDefaultListableBeanFactory();
+        return new GPDefaultListableBeanFactory(this.reader);
     }
 
     public GPDefaultListableBeanFactory getBeanFactory() {
