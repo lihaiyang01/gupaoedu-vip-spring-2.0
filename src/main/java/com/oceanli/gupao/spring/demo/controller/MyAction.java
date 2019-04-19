@@ -1,5 +1,6 @@
 package com.oceanli.gupao.spring.demo.controller;
 
+import com.oceanli.gupao.spring.demo.service.IModifyService;
 import com.oceanli.gupao.spring.demo.service.IQueryService;
 import com.oceanli.gupao.spring.framework.annotation.GPAutowired;
 import com.oceanli.gupao.spring.framework.annotation.GPController;
@@ -18,10 +19,33 @@ public class MyAction {
     @GPAutowired
     IQueryService queryService;
 
+    @GPAutowired
+    IModifyService modifyService;
+
     @GPRequestMapping("/query.json")
     public GPModelAndView query(HttpServletRequest request, HttpServletResponse response,
                                 @GPRequestParam("name") String name){
         String result = queryService.query(name);
+        return out(response,result);
+    }
+
+    @GPRequestMapping("/add*.json")
+    public GPModelAndView add(HttpServletRequest request,HttpServletResponse response,
+                              @GPRequestParam("name") String name,@GPRequestParam("addr") String addr){
+        String result = modifyService.add(name,addr);
+        return out(response,result);
+    }
+    @GPRequestMapping("/remove.json")
+    public GPModelAndView remove(HttpServletRequest request,HttpServletResponse response,
+                                 @GPRequestParam("id") Integer id){
+        String result = modifyService.remove(id);
+        return out(response,result);
+    }
+    @GPRequestMapping("/edit.json")
+    public GPModelAndView edit(HttpServletRequest request,HttpServletResponse response,
+                               @GPRequestParam("id") Integer id,
+                               @GPRequestParam("name") String name){
+        String result = modifyService.edit(id,name);
         return out(response,result);
     }
 

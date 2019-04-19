@@ -9,10 +9,11 @@ public class GPViewResolver {
     private File templateRootDir;
     private String viewName;
 
-    public GPViewResolver(String templateRoot){
+    public GPViewResolver(String templateRoot, String viewName){
         String templateRootPath =
                 this.getClass().getClassLoader().getResource(templateRoot).getFile();
         this.templateRootDir = new File(templateRootPath);
+        this.viewName = viewName;
     }
     public GPView resolveViewName(String viewName, Locale locale) throws Exception {
 

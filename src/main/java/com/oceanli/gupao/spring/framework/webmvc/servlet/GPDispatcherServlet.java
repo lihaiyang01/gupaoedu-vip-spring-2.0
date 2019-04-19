@@ -48,8 +48,14 @@ public class GPDispatcherServlet extends HttpServlet {
 
         //根据用户的URL获取一个handler
         GPHandlerMapping handlerMapping = getHandler(req);
+        if (handlerMapping == null) {
+            return;
+        }
         //跟进handlermapping找到对应的adapter
         GPHandlerAdapter ha = getHandlerAdapter(handlerMapping);
+        if (ha == null) {
+            return;
+        }
         //执行调用方法，返回modelandview
         GPModelAndView mv = ha.handle(req, resp, handlerMapping);
         //输出结果
@@ -67,8 +73,11 @@ public class GPDispatcherServlet extends HttpServlet {
         }
         for (GPViewResolver viewResolver: viewResolvers) {
             String viewName = viewResolver.getViewName();
-            GPView gpView = viewResolver.resolveViewName(viewName, null);
-            gpView.render(mv, req, resp);
+            if (viewName.equals(mv.getViewName())) {
+                GPView gpView = viewResolver.resolveViewName(viewName, null);
+                gpView.render(mv, req, resp);
+            }
+
 
         }
     }
@@ -212,7 +221,8 @@ public class GPDispatcherServlet extends HttpServlet {
         String templateRootPath = this.getClass().getClassLoader().getResource(templateRoot).getFile();
         File templateRootDir = new File(templateRootPath);
         for (File f : templateRootDir.listFiles()) {
-            viewResolvers.add(new GPViewResolver(templateRoot));
+
+            viewResolvers.add(new GPViewResolver(templateRoot, f.getName()));
         }
     }
 
